@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+    nginx:
+        container_name: sample_nginx
+        # image: nginx:1.25-alpine ## my uses arm-version, cause i have m1 mac
+        image: arm64v8/nginx:1.25-alpine
+        volumes:
+            - ./configs/nginx/:/etc/nginx/conf.d/
+            - ./php/__app/:/var/www/
+        ports:
+          - 80:80
+          - 443:443
+        links:
+          - php-fpm
+
+    php-fpm:
+        container_name: sample_php-fpm
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        depends_on:
+            - db
+        volumes:
+            - ./php/__app/:/var/www/
+            - ./configs/php/php.ini:/usr/local/etc/php/php.ini
+            - ./configs/php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+    db:
+        image: arm64v8/mysql:8.2
+        container_name: sample_db
+        environment:
+            MYSQL_DATABASE: 'default'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'user'
+            MYSQL_ROOT_PASSWORD: 'root'
+        ports:
+        - 3306:3306
+        expose:
+        - 3306
+        volumes:
+        # - ./logs:/var/log/mysql
+        - ./data:/var/lib/mysql
+        - ./configs/mysql/my.cnf:/etc/my.cnf
+        - ./db-dump/dumps:/dumps
+        - ./db-dump/docker-entry:/docker-entrypoint-initdb.d
+        # networks:
+        # - default

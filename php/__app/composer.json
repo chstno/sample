@@ -1,0 +1,19 @@
+{
+  "autoload": {
+    "psr-4": { "": "" },
+    "files": [
+      "Core/Autoloader.php",
+      "Core/helpers.php"
+    ]
+  },
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    },
+  "require": {
+    "ext-zend-opcache": "*",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-mysqli": "*",
+    "php-amqplib/php-amqplib": "^2.0"
+  }
+}
