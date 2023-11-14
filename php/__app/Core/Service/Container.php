@@ -66,7 +66,7 @@ final class Container implements ContainerInterface, SingletonInterface
 
     /**
      *
-     * Maybe should passing args recursively?
+     * Maybe should pass args recursively?
      * That will allow us to custom init any dependencies
      *
      * @param string $class

@@ -16,7 +16,7 @@ interface QueryBuilderInterface extends \Stringable
     public function leftJoin(string $joinTable, string|array $on): static;
     public function rightJoin(string $joinTable, string|array $on): static;
     public function innerJoin(string $joinTable, string|array $on): static;
-    public function join(string $joinTable, string|array $on, string $type = 'LEFT'): static;
+    public function join(string $joinTable, string|array $on, string $type): static;
     public function where(array|string $where, string $operator = '&', string $operation = '='): static;
     public function having(array|string $having, string $operator = '&', string $operation = '='): static;
     public function orWhere(array|string $where, string $operator = '&', string $operation = '='): static;

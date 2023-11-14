@@ -12,7 +12,7 @@ use Core\Support\QueryBuilderInterface;
 trait Relation
 {
     /**
-     * @var array<class-string, QueryBuilderInterface>
+     * @var array<class-string, mixed>
      */
     protected array $relations = [];
     protected array $relationRepositories = [];
@@ -27,6 +27,24 @@ trait Relation
     abstract public function getDtoMap(): array;
     abstract public function prepareModelAttributes(Model $model, bool $primary = false): array;
 
-    abstract protected function setRelation(string $relationKey, ModelRepository $childRepository);
-    abstract protected function getRelation(string $relationKey);
+
+    protected function getRelation(string $relationKey): mixed
+    {
+        return isset($this->relations[$relationKey]) ? clone $this->relations[$relationKey] : null;
+    }
+
+    public function setRelation(string $relationKey, mixed $relation): mixed
+    {
+        return $this->relations[$relationKey] = $relation;
+    }
+
+    protected function getRelationRepository(string $relationKey): ?ModelRepository
+    {
+        return $this->relationRepositories[$relationKey] ?? null;
+    }
+
+    protected function setRelationRepository(string $relationKey, ModelRepository $repository): void
+    {
+        $this->relationRepositories[$relationKey] = $repository;
+    }
 }

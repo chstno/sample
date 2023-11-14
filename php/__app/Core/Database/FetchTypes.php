@@ -5,8 +5,8 @@ namespace Core\Database;
 
 enum FetchTypes: int
 {
-    public const FETCH          = 1;
-    public const FETCH_ALL      = 2;
-    public const AFFECTED       = 3;
-    public const LAST_INSERT_ID = 4;
+    case FETCH          = 1;
+    case FETCH_ALL      = 2;
+    case AFFECTED       = 3;
+    case LAST_INSERT_ID = 4;
 }

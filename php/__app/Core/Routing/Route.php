@@ -65,32 +65,6 @@ class Route implements RouteInterface
         return false;
     }
 
-    // an alternative with the perspective of manually creating objects
-    protected function _setAction(array|string $action)
-    {
-
-        if (!$action)
-            throw new \InvalidArgumentException("[". static::class ."]: action cannot be empty!");
-
-        if (is_string($action)) {
-
-            if (!is_callable($action))
-                throw new \InvalidArgumentException("[". static::class ."]: action is not callable!");
-
-            $this->action = $action;
-        }
-
-        if (!isset($action[1]))
-            throw new \InvalidArgumentException("[". static::class ."]: action is not callable!
-            action[1] must contain a class/object method");
-
-        if (!method_exists($action[0], $action[1]))
-            throw new \InvalidArgumentException("[". static::class ."]: action is not callable! 
-            Method {$action[0]}::{$action[1]} is not found");
-
-        $this->action = $action;
-    }
-
     public function getParameters(): array
     {
         return $this->parameters;

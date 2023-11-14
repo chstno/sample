@@ -69,7 +69,7 @@ abstract class QueryBuilder implements QueryBuilderInterface
         return (string) $this->queryTemplateEngine;
     }
 
-    public function expr(): ExpressionInterface
+    public function expr(): BaseExpression
     {
         return new $this->expr();
     }
@@ -149,10 +149,19 @@ abstract class QueryBuilder implements QueryBuilderInterface
             if ((string) $expr)
                 $expr->$concatenationOperator();
 
+            if (is_int($key) && is_array($value) && count($value) === 3) {
+                $key = $value[0];
+                $customOperation = (string) $value[1];
+                $value = $value[2];
+            }
+
             if (is_numeric($value) || $this->isLiteral($value))
                 $value = $this->setNamedParameter(trim($value, "\"'"));
 
-            $expr->$operation($key, $value);
+            if (!isset($customOperation))
+                $expr->$operation($key, $value);
+            else
+                $expr->$customOperation($key, $value);
         }
 
         return $expr;

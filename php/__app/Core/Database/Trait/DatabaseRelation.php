@@ -26,7 +26,7 @@ trait DatabaseRelation
     abstract public function getConnection(): DBConnection;
     abstract public function getQueryBuilder(): QueryBuilder;
 
-    protected function setRelation(string $relationKey, ModelRepository $childRepository): QueryBuilder
+    protected function setDatabaseRelation(string $relationKey, ModelRepository $childRepository): QueryBuilder
     {
 
         if (!$childRepository instanceof ModelDatabaseRepository)
@@ -34,7 +34,12 @@ trait DatabaseRelation
 
 
         if ($this->getConnection() !== $childRepository->getConnection())
-            throw new \RuntimeException("[".static::class."]: relations for different connections are not yet implemented");
+            throw new \RuntimeException(
+                sprintf(
+                    "[%s]: relations for different connections not possible, use [%s] instead",
+                    static::class,
+                    CrossSourcesRelation::class
+                ));
 
 
         $parentModel = $this->getModelClass();
@@ -73,22 +78,12 @@ trait DatabaseRelation
         $queryBuilder
             ->select(...$fields)
             ->from($parentTable)
-            ->join($childTable, $relationKeys);
+            ->innerJoin($childTable, $relationKeys);
 
 
-        $this->relationRepositories[$relationKey] = $childRepository;
+       $this->setRelationRepository($relationKey, $childRepository);
 
-        return $this->relations[$relationKey] = $queryBuilder;
-    }
-
-    protected function getRelation(string $relationKey): ?QueryBuilder
-    {
-        return isset($this->relations[$relationKey]) ? clone $this->relations[$relationKey] : null;
-    }
-
-    protected function getRelationRepository(string $repositoryClass): ?ModelRepository
-    {
-        return $this->relationRepositories[$repositoryClass] ?? null;
+        return $this->setRelation($relationKey, $queryBuilder);
     }
 
     protected function has(Model $model, string $relatedRepositoryClass): array
@@ -96,7 +91,7 @@ trait DatabaseRelation
         $relationQuery = $this->getRelation($relatedRepositoryClass);
 
         if ($relationQuery === null)
-            $relationQuery = $this->setRelation($relatedRepositoryClass, instance($relatedRepositoryClass));
+            $relationQuery = $this->setDatabaseRelation($relatedRepositoryClass, instance($relatedRepositoryClass));
 
         $modelKeys = $this->prepareModelAttributes($model, true);
         $this->getQueryBuilder()->prepareTableFields($modelKeys, $this->getTable());

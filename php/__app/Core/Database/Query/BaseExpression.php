@@ -80,37 +80,37 @@ class BaseExpression implements ExpressionInterface, ComparisonExpressionInterfa
         return $this;
     }
 
-    public function equal(?string $var, ?string $value): static
+    public function equal(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::EQUAL);
     }
 
-    public function notEqual(?string $var, ?string $value): static
+    public function notEqual(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::NOT_EQUAL);
     }
 
-    public function biggerOrEqual(?string $var, ?string $value): static
+    public function biggerOrEqual(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::BIGGER_EQUAL);
     }
 
-    public function bigger(?string $var, ?string $value): static
+    public function bigger(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::BIGGER);
     }
 
-    public function lower(?string $var, ?string $value): static
+    public function lower(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::LOWER);
     }
 
-    public function lowerOrEqual(?string $var, ?string $value): static
+    public function lowerOrEqual(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::LOWER_EQUAL);
     }
 
-    public function like(?string $var, ?string $value): static
+    public function like(?string $var = null, ?string $value = null): static
     {
         return $this->addComparison($var, $value, static::LIKE);
     }
@@ -174,7 +174,7 @@ class BaseExpression implements ExpressionInterface, ComparisonExpressionInterfa
         return $this;
     }
 
-    public function field(string $name, ?string $table): static
+    public function field(string $name, ?string $table = null): static
     {
         $this->expr .= $table ? "{$table}.{$name}" : "$name";
         return $this;

@@ -16,7 +16,7 @@ use Core\Model\Model;
 class Post extends Model
 {
 
-    protected int   $id;
+    public ?int     $id;
     public int      $userId;
     public string   $text;
 

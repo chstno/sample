@@ -15,7 +15,7 @@ use Core\Model\Model;
 class User extends Model
 {
 
-    public int          $id;
+    public ?int         $id;
     public string       $name;
     public int          $gender;
     public \DateTime    $birthDate;

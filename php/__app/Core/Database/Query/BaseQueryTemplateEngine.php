@@ -122,7 +122,7 @@ abstract class BaseQueryTemplateEngine implements QueryTemplateEngineInterface
         return $this;
     }
 
-    public function join(string $join, string $on, string $type = 'LEFT'): static
+    public function join(string $join, string $on, string $type): static
     {
         $this->query = '';
         $this->join[] = [$type, $join, $on];

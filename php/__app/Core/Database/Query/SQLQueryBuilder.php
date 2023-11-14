@@ -16,6 +16,10 @@ use JetBrains\PhpStorm\Pure;
 class SQLQueryBuilder extends QueryBuilder
 {
 
+    public const LEFT_JOIN  = 'LEFT';
+    public const RIGHT_JOIN = 'RIGHT';
+    public const INNER_JOIN = 'INNER';
+
     #[Pure]
     public function __construct(SQLQueryTemplateEngine $templateEngine)
     {
@@ -29,15 +33,15 @@ class SQLQueryBuilder extends QueryBuilder
 
     public function rightJoin(string $joinTable, string|array $on): static
     {
-        return $this->join($joinTable, $on, 'RIGHT');
+        return $this->join($joinTable, $on, self::RIGHT_JOIN);
     }
 
     public function innerJoin(string $joinTable, string|array $on): static
     {
-        return $this->join($joinTable, $on, 'INNER');
+        return $this->join($joinTable, $on, self::INNER_JOIN);
     }
 
-    public function join(string $joinTable, string|array $on, string $type = 'LEFT'): static
+    public function join(string $joinTable, string|array $on, string $type = self::LEFT_JOIN): static
     {
         if (is_array($on)) {
             $on = $this->prepareConditionFromArray($on);

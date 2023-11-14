@@ -21,6 +21,12 @@ class UserService implements UserServiceInterface
         $userRepository = instance(UserRepositoryInterface::class);
         $user = new User();
         $user->id = $userId;
-        return $userRepository->getPosts($user);
+
+        return [
+            'join' => $userRepository->getPosts($user),
+            'cross' => $userRepository->getPostsViaCrossRelation($user),
+            'usersUnder20' => $userRepository->getByUnderAge(20),
+            'usersOlderThan20' => $userRepository->getOlderThan(20),
+        ];
     }
 }
